@@ -16,7 +16,7 @@
 - (NSString *)md5Hash {
     const char *plain = self.UTF8String;
     unsigned char *digest;
-    digest = malloc(CC_SHA1_DIGEST_LENGTH);
+    digest = malloc(CC_MD5_DIGEST_LENGTH);
     
     CC_MD5(plain, (CC_LONG)strlen(plain), digest);
     
@@ -101,7 +101,7 @@
     
     unsigned char *digest;
     digest = malloc(CC_SHA1_DIGEST_LENGTH);
-    const char *cKey = [self cStringUsingEncoding:NSUTF8StringEncoding];
+    const char *cKey = [key cStringUsingEncoding:NSUTF8StringEncoding];
     CCHmac(kCCHmacAlgSHA1, cKey, strlen(cKey), [hashData bytes], [hashData length], digest);
 
     NSString *encode = [self stringFromBytes:digest length:CC_SHA1_DIGEST_LENGTH];
@@ -115,7 +115,7 @@
     
     unsigned char *digest;
     digest = malloc(CC_SHA224_DIGEST_LENGTH);
-    const char *cKey = [self cStringUsingEncoding:NSUTF8StringEncoding];
+    const char *cKey = [key cStringUsingEncoding:NSUTF8StringEncoding];
     CCHmac(kCCHmacAlgSHA224, cKey, strlen(cKey), [hashData bytes], [hashData length], digest);
     
     NSString *encode = [self stringFromBytes:digest length:CC_SHA224_DIGEST_LENGTH];
@@ -129,7 +129,7 @@
     
     unsigned char *digest;
     digest = malloc(CC_SHA256_DIGEST_LENGTH);
-    const char *cKey = [self cStringUsingEncoding:NSUTF8StringEncoding];
+    const char *cKey = [key cStringUsingEncoding:NSUTF8StringEncoding];
     CCHmac(kCCHmacAlgSHA256, cKey, strlen(cKey), [hashData bytes], [hashData length], digest);
     
     NSString *encode = [self stringFromBytes:digest length:CC_SHA256_DIGEST_LENGTH];
@@ -143,7 +143,7 @@
     
     unsigned char *digest;
     digest = malloc(CC_SHA384_DIGEST_LENGTH);
-    const char *cKey = [self cStringUsingEncoding:NSUTF8StringEncoding];
+    const char *cKey = [key cStringUsingEncoding:NSUTF8StringEncoding];
     CCHmac(kCCHmacAlgSHA256, cKey, strlen(cKey), [hashData bytes], [hashData length], digest);
     
     NSString *encode = [self stringFromBytes:digest length:CC_SHA384_DIGEST_LENGTH];
@@ -157,7 +157,7 @@
     
     unsigned char *digest;
     digest = malloc(CC_SHA512_DIGEST_LENGTH);
-    const char *cKey = [self cStringUsingEncoding:NSUTF8StringEncoding];
+    const char *cKey = [key cStringUsingEncoding:NSUTF8StringEncoding];
     CCHmac(kCCHmacAlgSHA512, cKey, strlen(cKey), [hashData bytes], [hashData length], digest);
     
     NSString *encode = [self stringFromBytes:digest length:CC_SHA512_DIGEST_LENGTH];
@@ -167,7 +167,9 @@
 }
 
 #pragma mark - Bytes转字符串
-/// 字符大小写可以通过修改“%02X”中的x修改,下面采用的是大写
+/**
+ 字符大小写可以通过修改“%02X”中的x修改,下面采用的是大写
+ */
 - (NSString *)stringFromBytes:(uint8_t *)bytes length:(int)length {
     NSMutableString *strM = [NSMutableString string];
     
